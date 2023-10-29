@@ -12,7 +12,11 @@ func _ready():
 	$DebugLabel.visible = false
 	
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
-		$CameraPosition.add_child(Camera3D.new())
+		var camera = Camera3D.new()
+		# Setting cull_mask layer 2 to false will stop rendering it for the car.
+		# We're doing this to hide the SpawnPoint materials in the scene
+		camera.set_cull_mask_value(2, false)
+		$CameraPosition.add_child(camera)
 		$BreakLights.visible = false
 		$DebugLabel.visible = true
 

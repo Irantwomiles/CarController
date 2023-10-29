@@ -14,6 +14,7 @@ func _ready():
 		for spawn in get_tree().get_nodes_in_group("SpawnPoints"):
 			if spawn.name == str(index):
 				currentPlayer.set_position(spawn.get_position())
+				currentPlayer.set_rotation(spawn.get_rotation())
 				
 		index += 1
 	
