@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://df5kgh4miheu4"]
 
-[ext_resource type="Script" path="res://car.gd" id="1_7c72v"]
-[ext_resource type="ArrayMesh" uid="uid://ke8hmg8luy8x" path="res://nissan_body.tres" id="2_ra406"]
-[ext_resource type="ArrayMesh" uid="uid://cpibg3o72jaa3" path="res://tire.tres" id="3_f83fp"]
+[ext_resource type="Script" path="res://car.gd" id="1_ayagb"]
+[ext_resource type="ArrayMesh" uid="uid://ke8hmg8luy8x" path="res://nissan_body.tres" id="2_isyt4"]
+[ext_resource type="ArrayMesh" uid="uid://cpibg3o72jaa3" path="res://tire.tres" id="3_2k0nf"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iltbk"]
 size = Vector3(3.5, 1.85, 6.33774)
@@ -25,13 +25,15 @@ properties/3/spawn = true
 properties/3/sync = true
 properties/3/watch = false
 
-[node name="TestCar" type="VehicleBody3D"]
+[node name="BlueCar" type="VehicleBody3D"]
+collision_layer = 2
+collision_mask = 5
 gravity_scale = 4.0
 can_sleep = false
-script = ExtResource("1_7c72v")
+script = ExtResource("1_ayagb")
 
 [node name="CarBody" type="MeshInstance3D" parent="."]
-mesh = ExtResource("2_ra406")
+mesh = ExtResource("2_isyt4")
 
 [node name="FrontLeft" type="VehicleWheel3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.13145, -0.4, 1.949)
@@ -46,7 +48,7 @@ damping_relaxation = 2.0
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="FrontLeft"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0806, 0.378954, -1.92172)
-mesh = ExtResource("3_f83fp")
+mesh = ExtResource("3_2k0nf")
 skeleton = NodePath("../../BackLeft")
 
 [node name="FrontRight" type="VehicleWheel3D" parent="."]
@@ -62,7 +64,7 @@ damping_relaxation = 2.0
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="FrontRight"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.09333, 0.378954, 1.95171)
-mesh = ExtResource("3_f83fp")
+mesh = ExtResource("3_2k0nf")
 skeleton = NodePath("../../BackLeft")
 
 [node name="BackRight" type="VehicleWheel3D" parent="."]
@@ -79,7 +81,7 @@ damping_relaxation = 2.0
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="BackRight"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.15665, 0.378954, 1.92152)
-mesh = ExtResource("3_f83fp")
+mesh = ExtResource("3_2k0nf")
 skeleton = NodePath("../../BackLeft")
 
 [node name="BackLeft" type="VehicleWheel3D" parent="."]
@@ -96,7 +98,7 @@ damping_relaxation = 2.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BackLeft"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.14999, 0.378954, -1.95191)
-mesh = ExtResource("3_f83fp")
+mesh = ExtResource("3_2k0nf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0540192, 0.224373)

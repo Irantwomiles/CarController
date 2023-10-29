@@ -68,7 +68,7 @@ func send_player_information(name, id):
 		GameManager.Players[id] = {
 			"name": name,
 			"id": id,
-			"score": 0
+			"finished": false
 		}
 	
 	# If the function is being called on the server, send it to all connected clients
@@ -80,7 +80,6 @@ func send_player_information(name, id):
 @rpc("any_peer")
 func get_players_rpc():
 	if multiplayer.is_server():
-		print("Players:", GameManager.Players)
 		update_player_list_rpc.rpc(GameManager.Players)
 
 @rpc("any_peer", "call_local")

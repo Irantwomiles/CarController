@@ -1,6 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://cgv4lf0kx6w7v"]
+[gd_scene load_steps=14 format=3 uid="uid://cgv4lf0kx6w7v"]
 
-[ext_resource type="PackedScene" uid="uid://df5kgh4miheu4" path="res://test_car.tscn" id="1_4qncd"]
+[ext_resource type="PackedScene" uid="uid://df5kgh4miheu4" path="res://blue_car.tscn" id="1_4qncd"]
 [ext_resource type="Script" path="res://LevelScene.gd" id="1_j753e"]
 [ext_resource type="PackedScene" uid="uid://b3od17wge7lqd" path="res://road_curve_pavement.tscn" id="2_gx04i"]
 [ext_resource type="PackedScene" uid="uid://dw66fdb43t45x" path="res://road_straight.tscn" id="3_vpkgs"]
@@ -29,6 +29,12 @@ size = Vector3(1000, 1, 1000)
 [sub_resource type="BoxShape3D" id="BoxShape3D_k2e17"]
 size = Vector3(1000, 1, 1000)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_b6qfa"]
+size = Vector3(20, 20, 50)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fstgc"]
+size = Vector3(20, 20, 20)
+
 [node name="LevelScene" type="Node3D"]
 script = ExtResource("1_j753e")
 PlayerScene = ExtResource("1_4qncd")
@@ -41,9 +47,10 @@ camera_attributes = SubResource("CameraAttributesPhysical_641dl")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 mesh = SubResource("BoxMesh_yp0e0")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+[node name="GroundStaticBody" type="StaticBody3D" parent="Ground"]
+collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/GroundStaticBody"]
 shape = SubResource("BoxShape3D_k2e17")
 
 [node name="Roads" type="Node3D" parent="."]
@@ -89,6 +96,40 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 20, 10)
 [node name="1" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, -32.461)
 
+[node name="2" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, -32.461)
+
+[node name="3" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, -32.461)
+
+[node name="4" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, -32.461)
+
+[node name="5" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, -32.461)
+
+[node name="6" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, -32.461)
+
+[node name="7" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, -32.461)
+
+[node name="8" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, -32.461)
+
 [node name="GameTimer" type="Timer" parent="."]
 
+[node name="FinishLine" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.901, 9.72457, 0)
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FinishLine"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.3518, 0, 6.8787)
+shape = SubResource("BoxShape3D_b6qfa")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FinishLine/CollisionShape3D"]
+mesh = SubResource("BoxMesh_fstgc")
+
 [connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]
+[connection signal="body_entered" from="FinishLine" to="." method="_on_finish_line_body_entered"]

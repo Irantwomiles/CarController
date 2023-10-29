@@ -1,6 +1,5 @@
 extends VehicleBody3D
 
-
 const MAX_STEER = 0.65
 const ENGINE_POWER = 25
 const MAX_TORQUE = 50
