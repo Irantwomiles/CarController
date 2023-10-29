@@ -10,9 +10,12 @@ const MAX_RPM = 500
 func _ready():
 	$MultiplayerSynchronizer.set_multiplayer_authority(str(name).to_int())
 	
+	$DebugLabel.visible = false
+	
 	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
 		$CameraPosition.add_child(Camera3D.new())
 		$BreakLights.visible = false
+		$DebugLabel.visible = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
@@ -21,8 +24,6 @@ func _physics_process(delta):
 	
 		var steering_input = Input.get_axis("ui_right", "ui_left")
 		var acceleration_input = Input.get_axis("ui_down", "ui_up")
-		
-		print(acceleration_input)
 		
 		if acceleration_input >= 0:
 			$BreakLights.visible = false

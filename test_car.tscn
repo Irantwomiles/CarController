@@ -5,7 +5,7 @@
 [ext_resource type="ArrayMesh" uid="uid://cpibg3o72jaa3" path="res://tire.tres" id="3_f83fp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iltbk"]
-size = Vector3(3.5, 1.5, 5)
+size = Vector3(3.5, 1.85, 6.33774)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mgt6f"]
 properties/0/path = NodePath(".:position")
@@ -99,6 +99,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.14999, 0.378954, -1.95191)
 mesh = ExtResource("3_f83fp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0540192, 0.224373)
 shape = SubResource("BoxShape3D_iltbk")
 
 [node name="DebugLabel" type="Label3D" parent="."]

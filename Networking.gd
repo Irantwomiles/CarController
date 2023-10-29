@@ -22,8 +22,9 @@ func playerDisconnected(id):
 
 # Called only from clients
 func playerConnectedToServer():
-	print("Player connected to server with")
-	send_player_information.rpc_id(1, "", multiplayer.get_unique_id())
+	# call this function on the server first, because the server is keeping track of all connected players
+	send_player_information.rpc_id(1, $Username.text, multiplayer.get_unique_id())
+	get_players_rpc.rpc_id(1)
 
 # Called only from clients
 func playerConnectionFailed():
@@ -39,7 +40,7 @@ func _on_host_button_down():
 		return
 	
 	multiplayer.set_multiplayer_peer(peer)
-	send_player_information("", multiplayer.get_unique_id())
+	send_player_information($Username.text, multiplayer.get_unique_id())
 	print("Created server")
 
 
@@ -60,6 +61,9 @@ func start_game():
 
 @rpc("any_peer")
 func send_player_information(name, id):
+	# This code is intially ran on the server.
+	# Server: Add player to Players dict if it doesn't exist
+	# Client: The client will get all of the Players from the server
 	if !GameManager.Players.has(id):
 		GameManager.Players[id] = {
 			"name": name,
@@ -67,6 +71,20 @@ func send_player_information(name, id):
 			"score": 0
 		}
 	
+	# If the function is being called on the server, send it to all connected clients
 	if multiplayer.is_server():
+		#print("Server: ", GameManager.Players)
 		for i in GameManager.Players:
 			send_player_information.rpc(GameManager.Players[i].name, i)
+
+@rpc("any_peer")
+func get_players_rpc():
+	if multiplayer.is_server():
+		print("Players:", GameManager.Players)
+		update_player_list_rpc.rpc(GameManager.Players)
+
+@rpc("any_peer", "call_local")
+func update_player_list_rpc(players):
+	$ItemList.clear()
+	for i in players:
+		$ItemList.add_item(players[i].name)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://cgv4lf0kx6w7v"]
 
 [ext_resource type="PackedScene" uid="uid://df5kgh4miheu4" path="res://test_car.tscn" id="1_4qncd"]
-[ext_resource type="Script" path="res://level_scene.gd" id="1_7uqf7"]
+[ext_resource type="Script" path="res://LevelScene.gd" id="1_j753e"]
 [ext_resource type="PackedScene" uid="uid://b3od17wge7lqd" path="res://road_curve_pavement.tscn" id="2_gx04i"]
 [ext_resource type="PackedScene" uid="uid://dw66fdb43t45x" path="res://road_straight.tscn" id="3_vpkgs"]
 
@@ -30,7 +30,7 @@ size = Vector3(1000, 1, 1000)
 size = Vector3(1000, 1, 1000)
 
 [node name="LevelScene" type="Node3D"]
-script = ExtResource("1_7uqf7")
+script = ExtResource("1_j753e")
 PlayerScene = ExtResource("1_4qncd")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -88,3 +88,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 20, 10)
 
 [node name="1" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, -32.461)
+
+[node name="GameTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]
