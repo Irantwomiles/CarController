@@ -1,0 +1,94 @@
+[gd_scene load_steps=12 format=3 uid="uid://cgv4lf0kx6w7v"]
+
+[ext_resource type="PackedScene" uid="uid://df5kgh4miheu4" path="res://test_car.tscn" id="1_4qncd"]
+[ext_resource type="Script" path="res://LevelScene.gd" id="1_j753e"]
+[ext_resource type="PackedScene" uid="uid://b3od17wge7lqd" path="res://road_curve_pavement.tscn" id="2_gx04i"]
+[ext_resource type="PackedScene" uid="uid://dw66fdb43t45x" path="res://road_straight.tscn" id="3_vpkgs"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w1mke"]
+sky_top_color = Color(0, 0.592157, 0.792157, 1)
+sky_horizon_color = Color(0.878431, 0.54902, 0.576471, 1)
+sky_curve = 0.126135
+
+[sub_resource type="Sky" id="Sky_rckia"]
+sky_material = SubResource("ProceduralSkyMaterial_w1mke")
+
+[sub_resource type="Environment" id="Environment_jpiew"]
+background_mode = 2
+sky = SubResource("Sky_rckia")
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_641dl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lu3bm"]
+albedo_color = Color(0.443137, 0.815686, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yp0e0"]
+material = SubResource("StandardMaterial3D_lu3bm")
+size = Vector3(1000, 1, 1000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k2e17"]
+size = Vector3(1000, 1, 1000)
+
+[node name="LevelScene" type="Node3D"]
+script = ExtResource("1_j753e")
+PlayerScene = ExtResource("1_4qncd")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jpiew")
+camera_attributes = SubResource("CameraAttributesPhysical_641dl")
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh = SubResource("BoxMesh_yp0e0")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+shape = SubResource("BoxShape3D_k2e17")
+
+[node name="Roads" type="Node3D" parent="."]
+
+[node name="road_curvePavement" parent="Roads" instance=ExtResource("2_gx04i")]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, -103.577, 0, -6.54763)
+
+[node name="road_straight" parent="Roads" instance=ExtResource("3_vpkgs")]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, 1.38292, 0, -1.51943)
+
+[node name="road_straight2" parent="Roads" instance=ExtResource("3_vpkgs")]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, -8.61708, 0, -1.51943)
+
+[node name="road_straight3" parent="Roads" instance=ExtResource("3_vpkgs")]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, -18.6171, 0, -1.51943)
+
+[node name="road_straight4" parent="Roads" instance=ExtResource("3_vpkgs")]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, -28.6171, 0, -1.51943)
+
+[node name="road_straight5" parent="Roads" instance=ExtResource("3_vpkgs")]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, -38.6171, 0, -1.51943)
+
+[node name="road_straight6" parent="Roads" instance=ExtResource("3_vpkgs")]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, -48.6171, 0, -1.51943)
+
+[node name="road_straight7" parent="Roads" instance=ExtResource("3_vpkgs")]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, -58.6171, 0, -1.51943)
+
+[node name="road_straight8" parent="Roads" instance=ExtResource("3_vpkgs")]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, -68.6171, 0, -1.51943)
+
+[node name="road_straight9" parent="Roads" instance=ExtResource("3_vpkgs")]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, -78.6171, 0, -1.51943)
+
+[node name="road_straight10" parent="Roads" instance=ExtResource("3_vpkgs")]
+transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, -88.6171, 0, -1.51943)
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="0" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 20, 10)
+
+[node name="1" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, -32.461)
+
+[node name="GameTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]
