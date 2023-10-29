@@ -222,6 +222,41 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 97, 2,
 layers = 2
 mesh = SubResource("BoxMesh_7fv3o")
 
+[node name="1" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 97, 2, -103)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SpawnPoints/1"]
+layers = 2
+mesh = SubResource("BoxMesh_7fv3o")
+
+[node name="2" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 97, 2, -109)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SpawnPoints/2"]
+layers = 2
+mesh = SubResource("BoxMesh_7fv3o")
+
+[node name="3" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 105, 2, -109)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SpawnPoints/3"]
+layers = 2
+mesh = SubResource("BoxMesh_7fv3o")
+
+[node name="4" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 105, 2, -103)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SpawnPoints/4"]
+layers = 2
+mesh = SubResource("BoxMesh_7fv3o")
+
+[node name="5" type="Node3D" parent="SpawnPoints" groups=["SpawnPoints"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 105, 2, -97)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SpawnPoints/5"]
+layers = 2
+mesh = SubResource("BoxMesh_7fv3o")
+
 [node name="GameTimer" type="Timer" parent="."]
 
 [node name="FinishLine" type="Area3D" parent="."]

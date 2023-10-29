@@ -5,6 +5,12 @@ var PORT = 8910
 var MAX_CLIENTS = 10
 var peer
 
+@export var HostButton : Button
+@export var JoinButton : Button
+@export var StartButton : Button
+@export var UsernameInput : LineEdit
+@export var ConnectedUsersList : ItemList
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	multiplayer.peer_connected.connect(playerConnected)
@@ -23,7 +29,7 @@ func playerDisconnected(id):
 # Called only from clients
 func playerConnectedToServer():
 	# call this function on the server first, because the server is keeping track of all connected players
-	send_player_information.rpc_id(1, $Username.text, multiplayer.get_unique_id())
+	send_player_information.rpc_id(1, UsernameInput.text, multiplayer.get_unique_id())
 	get_players_rpc.rpc_id(1)
 
 # Called only from clients
@@ -40,7 +46,7 @@ func _on_host_button_down():
 		return
 	
 	multiplayer.set_multiplayer_peer(peer)
-	send_player_information($Username.text, multiplayer.get_unique_id())
+	send_player_information(UsernameInput.text, multiplayer.get_unique_id())
 	print("Created server")
 
 
@@ -84,6 +90,6 @@ func get_players_rpc():
 
 @rpc("any_peer", "call_local")
 func update_player_list_rpc(players):
-	$ItemList.clear()
+	ConnectedUsersList.clear()
 	for i in players:
-		$ItemList.add_item(players[i].name)
+		ConnectedUsersList.add_item(players[i].name)
