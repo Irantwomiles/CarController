@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://daqjbvugdysgv"]
+[gd_scene load_steps=23 format=3 uid="uid://daqjbvugdysgv"]
 
 [ext_resource type="Script" path="res://ArcadeCar.gd" id="1_3ff1i"]
 [ext_resource type="Script" path="res://camera_pivot.gd" id="3_71bkd"]
@@ -270,13 +270,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_2gbe8")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rxtsm"]
-albedo_color = Color(1, 0.760784, 0.211765, 0.352941)
-
-[sub_resource type="BoxMesh" id="BoxMesh_rbspy"]
-material = SubResource("StandardMaterial3D_rxtsm")
-size = Vector3(0.25, 0.25, 0.25)
-
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_oxlm3"]
 bounce = 0.1
 
@@ -284,6 +277,20 @@ bounce = 0.1
 radius = 1.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_wnlj8"]
+radius = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rxtsm"]
+albedo_color = Color(1, 0.760784, 0.211765, 0.352941)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rbspy"]
+material = SubResource("StandardMaterial3D_rxtsm")
+size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dyx50"]
+albedo_color = Color(1, 0, 0.321569, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2hlj0"]
+material = SubResource("StandardMaterial3D_dyx50")
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_05kw6"]
 properties/0/path = NodePath("suv:position")
@@ -296,11 +303,9 @@ properties/1/sync = true
 properties/1/watch = false
 
 [node name="ArcadeCar" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 script = ExtResource("1_3ff1i")
 
 [node name="suv" type="Node3D" parent="."]
-visible = false
 
 [node name="body" type="Node3D" parent="suv"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
@@ -335,9 +340,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, -0.76)
 mesh = SubResource("ArrayMesh_3bdec")
 skeleton = NodePath("")
 
-[node name="GroundRay" type="RayCast3D" parent="suv"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.869861, 0)
-
 [node name="BreakLights" type="Node3D" parent="suv"]
 
 [node name="OmniLight3D" type="OmniLight3D" parent="suv/BreakLights"]
@@ -360,21 +362,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.633972, 0.291081, -2.84714
 light_color = Color(1, 0.454902, 0.372549, 1)
 omni_range = 2.2539
 
-[node name="camera_pivot" type="Node3D" parent="suv" node_paths=PackedStringArray("ball", "car_node")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2.39187)
-top_level = true
-script = ExtResource("3_71bkd")
-ball = NodePath("../../Ball")
-car_node = NodePath("..")
+[node name="GroundRay" type="RayCast3D" parent="suv"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.869861, 0)
 
-[node name="camera" type="Camera3D" parent="suv/camera_pivot"]
-transform = Transform3D(1, 0, 0, 0, 0.982935, 0.183951, 0, -0.183951, 0.982935, 0, 1.57439, 3.75943)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="suv/camera_pivot"]
-mesh = SubResource("BoxMesh_rbspy")
-
-[node name="Target" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.82416, 1.77475)
+[node name="camera_anchor" type="Node3D" parent="suv"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.10336, 6.15356)
 
 [node name="Ball" type="RigidBody3D" parent="."]
 physics_material_override = SubResource("PhysicsMaterial_oxlm3")
@@ -386,6 +378,7 @@ angular_damp = 15.0
 shape = SubResource("SphereShape3D_df3tb")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ball"]
+visible = false
 mesh = SubResource("SphereMesh_wnlj8")
 
 [node name="DebugLabel" type="Label3D" parent="."]
@@ -394,6 +387,25 @@ pixel_size = 0.0125
 text = "Sample Text"
 font_size = 24
 horizontal_alignment = 0
+
+[node name="camera_pivot" type="Node3D" parent="." node_paths=PackedStringArray("ball", "car_node")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2.39187)
+top_level = true
+script = ExtResource("3_71bkd")
+ball = NodePath("../Ball")
+car_node = NodePath("../suv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="camera_pivot"]
+mesh = SubResource("BoxMesh_rbspy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_2hlj0")
+
+[node name="camera" type="Camera3D" parent="." node_paths=PackedStringArray("ball", "car_node")]
+transform = Transform3D(1, 0, 0, 0, 0.982935, 0.183951, 0, -0.183951, 0.982935, 0, 2.07439, 6.1513)
+script = ExtResource("3_71bkd")
+ball = NodePath("../Ball")
+car_node = NodePath("../suv")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_05kw6")

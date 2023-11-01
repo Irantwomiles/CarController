@@ -7,9 +7,9 @@ extends Node3D
 @onready var right_wheel = $suv/body/wheel_frontRight
 @onready var left_wheel = $suv/body/wheel_frontLeft
 @onready var body_mesh = $suv/body/body
-@onready var camera = $suv/camera_pivot/camera
+@onready var camera = $camera
 
-var sphere_offset = Vector3(0, -1, 0)
+var sphere_offset = Vector3(0, 0, 0)
 var acceleration = 100
 var steering = 15.0
 var turn_speed = 4
