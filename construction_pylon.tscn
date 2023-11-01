@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxf10fen8srgy"]
+
+[ext_resource type="PackedScene" uid="uid://cqhxqm0wmtppl" path="res://models/roads/construction_pylon.glb" id="1_s1p16"]
+
+[node name="construction_pylon" instance=ExtResource("1_s1p16")]

@@ -69,6 +69,7 @@ offset_left = -495.0
 offset_top = 31.0
 offset_right = -33.0
 offset_bottom = 606.0
+grow_horizontal = 0
 
 [node name="ItemList" type="ItemList" parent="BoxContainer"]
 layout_mode = 2

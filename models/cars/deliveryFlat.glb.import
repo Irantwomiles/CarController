@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cnwm835v6od0k"
-path="res://.godot/imported/1994 Nissan 180MX.glb-792fc29786f6a01b652e1f4134ea1cd6.scn"
+uid="uid://cluteb7ucuu2t"
+path="res://.godot/imported/deliveryFlat.glb-666d4a7cf2dcea9babc609aa10d308bb.scn"
 
 [deps]
 
-source_file="res://models/cars/1994 Nissan 180MX.glb"
-dest_files=["res://.godot/imported/1994 Nissan 180MX.glb-792fc29786f6a01b652e1f4134ea1cd6.scn"]
+source_file="res://models/cars/deliveryFlat.glb"
+dest_files=["res://.godot/imported/deliveryFlat.glb-666d4a7cf2dcea9babc609aa10d308bb.scn"]
 
 [params]
 
