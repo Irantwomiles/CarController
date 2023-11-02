@@ -24,20 +24,3 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-
-
-func _on_game_timer_timeout():
-	print("Timer hit 0")
-
-
-@rpc("any_peer", "call_local", "unreliable_ordered")
-func player_crossed_finish_line_rpc(id):
-	if GameManager.Players.has(id):
-		GameManager.Players[id].finished = true
-		print(str(multiplayer.get_unique_id()) + " - Updated " + str(id) + " to finished")
-
-
-func _on_finish_line_body_entered(body):
-	if str(multiplayer.get_unique_id()) == body.name:
-		player_crossed_finish_line_rpc.rpc(multiplayer.get_unique_id())
-		

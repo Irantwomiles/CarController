@@ -8,13 +8,15 @@ extends Node3D
 @onready var left_wheel = $suv/body/wheel_frontLeft
 @onready var body_mesh = $suv/body/body
 @onready var camera = $camera
+@onready var multiplayer_synchronizer = $Ball/MultiplayerSynchronizer
 
 var sphere_offset = Vector3(0, 0, 0)
-var acceleration = 100
+var acceleration = 150
 var steering = 15.0
 var turn_speed = 4
 var turn_stop_limit = 0.65
 
+var MAX_LINEAR_VELOCITY = 35.0
 var speed_input = 0
 var rotate_input = 0
 
@@ -23,11 +25,12 @@ var body_tilt = 35
 func _ready():
 	ground_ray.add_exception(ball)
 	
-	$MultiplayerSynchronizer.set_multiplayer_authority(str(name).to_int())
+	multiplayer_synchronizer.set_multiplayer_authority(str(name).to_int())
+	ball.name = str(name)
 	
 	$DebugLabel.visible = false
 	
-	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
+	if multiplayer_synchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
 		# Setting cull_mask layer 2 to false will stop rendering it for the car.
 		# We're doing this to hide the SpawnPoint materials in the scene
 		camera.set_cull_mask_value(2, false)
@@ -37,13 +40,17 @@ func _ready():
 	
 
 func _physics_process(delta):
-	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
+	if multiplayer_synchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
 		car_mesh.transform.origin = ball.transform.origin + sphere_offset
-		ball.apply_central_force(-car_mesh.global_transform.basis.z * speed_input)
+		
+		if ball.get_linear_velocity().length() > MAX_LINEAR_VELOCITY:
+			ball.apply_central_force(-car_mesh.global_transform.basis.z * 1)
+		else:
+			ball.apply_central_force(-car_mesh.global_transform.basis.z * speed_input)
 
 func _process(delta):
 	# Can't steer/accelerate when in the air
-	if $MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
+	if multiplayer_synchronizer.get_multiplayer_authority() == multiplayer.get_unique_id():
 	
 		if not ground_ray.is_colliding():
 			return
@@ -54,10 +61,18 @@ func _process(delta):
 		speed_input *= acceleration
 		# Get steering input
 		rotate_input = 0
-		rotate_input += Input.get_action_strength("steer_left")
-		rotate_input -= Input.get_action_strength("steer_right")
-		rotate_input *= deg_to_rad(steering)
 		
+		break_lights.visible = false
+		
+		if speed_input >= 0:
+			rotate_input += Input.get_action_strength("steer_left")
+			rotate_input -= Input.get_action_strength("steer_right")
+		else:
+			rotate_input -= Input.get_action_strength("steer_left")
+			rotate_input += Input.get_action_strength("steer_right")
+			break_lights.visible = true
+		
+		rotate_input *= deg_to_rad(steering)
 		# rotate wheels for effect
 		right_wheel.rotation.y = rotate_input
 		left_wheel.rotation.y = rotate_input
@@ -78,6 +93,8 @@ func _process(delta):
 		var n = ground_ray.get_collision_normal()
 		var xform = align_with_y(car_mesh.global_transform, n.normalized())
 		car_mesh.global_transform = car_mesh.global_transform.interpolate_with(xform, 10 * delta)
+		
+
 
 func align_with_y(xform, new_y):
 	xform.basis.y = new_y

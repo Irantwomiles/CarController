@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cgv4lf0kx6w7v"]
+[gd_scene load_steps=18 format=3 uid="uid://cgv4lf0kx6w7v"]
 
 [ext_resource type="Script" path="res://LevelScene.gd" id="1_j753e"]
 [ext_resource type="PackedScene" uid="uid://b3od17wge7lqd" path="res://road_curve_pavement.tscn" id="2_gx04i"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dw66fdb43t45x" path="res://road_straight.tscn" id="3_vpkgs"]
 [ext_resource type="Texture2D" uid="uid://cdbbvfuvnpfiq" path="res://addons/kenney_prototype_textures/green/texture_06.png" id="6_qdto8"]
 [ext_resource type="PackedScene" uid="uid://bqh1hsknnpkpd" path="res://street_light.tscn" id="7_u2acp"]
+[ext_resource type="PackedScene" uid="uid://13irrnp7i5ov" path="res://check_point.tscn" id="8_kqnao"]
 [ext_resource type="PackedScene" uid="uid://daqjbvugdysgv" path="res://arcade_car.tscn" id="8_ydwh2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w1mke"]
@@ -40,12 +41,6 @@ albedo_texture = ExtResource("6_qdto8")
 
 [sub_resource type="BoxMesh" id="BoxMesh_7fv3o"]
 material = SubResource("StandardMaterial3D_tl17i")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_b6qfa"]
-size = Vector3(4.01558, 11.6766, 23.0557)
-
-[sub_resource type="BoxMesh" id="BoxMesh_fstgc"]
-size = Vector3(20, 20, 20)
 
 [node name="LevelScene" type="Node3D"]
 script = ExtResource("1_j753e")
@@ -262,20 +257,6 @@ mesh = SubResource("BoxMesh_7fv3o")
 
 [node name="GameTimer" type="Timer" parent="."]
 
-[node name="FinishLine" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.6215, 0, 0)
-collision_layer = 4
-collision_mask = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="FinishLine"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.381, 4.43917, 8.96647)
-shape = SubResource("BoxShape3D_b6qfa")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="FinishLine/CollisionShape3D"]
-transform = Transform3D(0.219617, 0, 0, 0, 1, 0, 0, 0, 1.14688, 0, 0, 0)
-visible = false
-mesh = SubResource("BoxMesh_fstgc")
-
 [node name="Decorations" type="Node3D" parent="."]
 
 [node name="street light" parent="." instance=ExtResource("7_u2acp")]
@@ -286,5 +267,12 @@ transform = Transform3D(0.446198, -0.894934, 0, 0.894934, 0.446198, 0, 0, 0, 1, 
 use_collision = true
 size = Vector3(2.225, 7.065, 7.55)
 
+[node name="CheckPoints" type="Node3D" parent="."]
+
+[node name="check_point_0" parent="CheckPoints" instance=ExtResource("8_kqnao")]
+
+[node name="check_point_1" parent="CheckPoints" instance=ExtResource("8_kqnao")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.4969, 0, 0)
+check_point_name = "check_point_1"
+
 [connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]
-[connection signal="body_entered" from="FinishLine" to="." method="_on_finish_line_body_entered"]

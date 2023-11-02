@@ -74,6 +74,9 @@ func send_player_information(name, id):
 		GameManager.Players[id] = {
 			"name": name,
 			"id": id,
+			"current_check_point": "",
+			"next_check_point": "check_point_0", # Need to automatically set this based on the scene
+			"current_lap": 0,
 			"finished": false
 		}
 	
