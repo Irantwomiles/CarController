@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cgv4lf0kx6w7v"]
+[gd_scene load_steps=19 format=3 uid="uid://cgv4lf0kx6w7v"]
 
 [ext_resource type="Script" path="res://LevelScene.gd" id="1_j753e"]
 [ext_resource type="PackedScene" uid="uid://b3od17wge7lqd" path="res://road_curve_pavement.tscn" id="2_gx04i"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bqh1hsknnpkpd" path="res://street_light.tscn" id="7_u2acp"]
 [ext_resource type="PackedScene" uid="uid://13irrnp7i5ov" path="res://check_point.tscn" id="8_kqnao"]
 [ext_resource type="PackedScene" uid="uid://daqjbvugdysgv" path="res://arcade_car.tscn" id="8_ydwh2"]
+[ext_resource type="PackedScene" uid="uid://b0j0g4j6kwp8r" path="res://HUD.tscn" id="9_sr6hh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w1mke"]
 sky_top_color = Color(0, 0.592157, 0.792157, 1)
@@ -270,9 +271,20 @@ size = Vector3(2.225, 7.065, 7.55)
 [node name="CheckPoints" type="Node3D" parent="."]
 
 [node name="check_point_0" parent="CheckPoints" instance=ExtResource("8_kqnao")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.30647, 0, 0)
 
 [node name="check_point_1" parent="CheckPoints" instance=ExtResource("8_kqnao")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.4969, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.5611, 0, 0)
 check_point_name = "check_point_1"
+
+[node name="check_point_2" parent="CheckPoints" instance=ExtResource("8_kqnao")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -92.4935, 0, 0)
+check_point_name = "check_point_2"
+
+[node name="finish_line" parent="CheckPoints" instance=ExtResource("8_kqnao")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -128.739, 0, 0)
+check_point_name = "finish_line"
+
+[node name="HUD" parent="." instance=ExtResource("9_sr6hh")]
 
 [connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]

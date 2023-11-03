@@ -1,63 +1,71 @@
 extends Area3D
 
+signal updated_players_state
+
 @export var check_point_name : String
 
-@rpc("any_peer", "call_local", "unreliable_ordered")
-func player_crossed_check_point_rpc(id):
-	if GameManager.Players.has(id):
-		GameManager.Players[id].finished = true
-		print(str(multiplayer.get_unique_id()) + " - Updated " + str(id) + " to finished")
-
-@rpc("any_peer", "call_local", "reliable")
+@rpc("any_peer", "call_remote", "reliable")
 func send_player_data_all_rpc(updatedState):
 	GameManager.Players = updatedState
+	
 
 @rpc("any_peer")
-func update_player_state_rpc(player_id, check_point_name):
-	if multiplayer.is_server():
-		if GameManager.Players.has(player_id):
+func validate_checkpoint_crossing_rpc(player_id, checkpoint_name):
+	if not multiplayer.is_server():
+		return
+	
+	if not GameManager.Players.has(player_id):
+		print("[Server] could not find player " + str(player_id))
+		return
+	
+	var player = GameManager.Players[player_id]
+	
+	print("[Server] checking if " + str(player_id) + " crossed the correct checkpoint")
+	print("[Server] current: " + player["current_check_point"] + " next: " + player["next_check_point"] + " finished: " + str(player["finished"]))
+
+	if player["finished"]:
+		print("[Server] player " + str(player_id) + " has already finished")
+		return
+	
+	if player["next_check_point"] == checkpoint_name:
+		
+		print("[Server] player " + str(player_id) + " has crossed the correct!")
+		
+		var all_checkpoints = GameManager.GameState["CheckPoints"]
+		player["current_check_point"] = checkpoint_name
+		var next_index = all_checkpoints.find(checkpoint_name, 0)
+		
+		print("[Server] current " + str(next_index) + " len " + str(len(all_checkpoints)))
+		
+		# If player has reached all checkpoints and is now finished, set their status to finished, otherwise update next_check_point
+		if next_index >= len(all_checkpoints) - 1:
 			
-			print("Found " + str(player_id) + " for " + check_point_name)
 			
-			var all_check_points = GameManager.GameState["CheckPoints"]
-			var player = GameManager.Players[player_id]
+			player["current_lap"] += 1
 			
-			print(all_check_points)
-			
-			if player["finished"]:
-				print("Player has already finished " + str(player_id))
-				return
-			
-			if check_point_name != player["next_check_point"]:
-				print("Crossed the wrong check point " + str(player_id))
-				return
-				
-			var current_index = all_check_points.find(check_point_name, 0)
-			
-			print("current_index " + str(current_index))
-			print(all_check_points.length())
-			if current_index == (all_check_points.length() - 1):
-				
-				print("")
-				
-				player["current_lap"] += 1
-				
-				if player["current_lap"] >= GameManager.GameState["LapCount"]:
-					player["finished"] = true
-					player_crossed_check_point_rpc.rpc(player_id)
-				else:
-					print(str(player_id) + " has finished lap " + str(player["current_lap"] - 1))
+			if player["current_lap"] == GameManager.GameState["LapCount"]:
+				player["finished"] = true
+				print("[Server] player " + str(player_id) + " has finished!")
 			else:
-				player["current_check_point"] = all_check_points[current_index]
-				player["next_check_point"] = all_check_points[current_index + 1]
-			
-			send_player_data_all_rpc.rpc(GameManager.Players)
+				player["current_check_point"] = ""
+				player["next_check_point"] = all_checkpoints[0]
+				
+				send_player_data_all_rpc.rpc(GameManager.Players)
+				
+				print("[Server] player " + str(player_id) + " has completed lap (" + str(player["current_lap"]) + "/" + str(GameManager.GameState["LapCount"]) + ")")
 		else:
-			print("Couldn't find player " + str(player_id))		
+			print("[Server] updated player " + str(player_id) + " next checkpoint to " + all_checkpoints[next_index + 1])
+			player["next_check_point"] = all_checkpoints[next_index + 1]
+		
+		print(GameManager.Players[player_id])
 
 func _on_body_entered(body):
-	print("body: " + body.name)
+	# If the body.name == the current multiplayer id, that peer crossed the checkpoint
 	if str(multiplayer.get_unique_id()) == body.name:
-		print(str(multiplayer.get_unique_id()) + " has crossed check point " + check_point_name)
-		update_player_state_rpc.rpc_id(1, multiplayer.get_unique_id(), check_point_name)
-#		player_crossed_check_point_rpc.rpc(multiplayer.get_unique_id())
+		print(str(multiplayer.get_unique_id()) + " has entered check point " + check_point_name)
+		
+		# Can't call rpc functions to your own rpc_id. This comes up if you are the server and calling rpc_id(1, ...)
+		if multiplayer.is_server():
+			validate_checkpoint_crossing_rpc(multiplayer.get_unique_id(), check_point_name)
+		else:
+			validate_checkpoint_crossing_rpc.rpc_id(1, multiplayer.get_unique_id(), check_point_name)

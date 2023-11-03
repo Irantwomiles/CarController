@@ -9,6 +9,7 @@ extends Node3D
 @onready var body_mesh = $suv/body/body
 @onready var camera = $camera
 @onready var multiplayer_synchronizer = $Ball/MultiplayerSynchronizer
+@onready var audio_stream = $suv/AudioStreamPlayer3D
 
 var sphere_offset = Vector3(0, 0, 0)
 var acceleration = 150
@@ -65,8 +66,23 @@ func _process(delta):
 		break_lights.visible = false
 		
 		if speed_input >= 0:
+			
+#			if speed_input == 0:
+#				audio_stream.set_pitch_scale(1)
+#				audio_stream.stop()
+#				audio_stream.set_volume_db(0)
+#			else:
+#				if not audio_stream.playing:
+#					audio_stream.play()
+#					audio_stream.set_volume_db(0)
+#				else:
+#					audio_stream.set_volume_db(audio_stream.get_volume_db() + 0.001)
+#				
+			
 			rotate_input += Input.get_action_strength("steer_left")
 			rotate_input -= Input.get_action_strength("steer_right")
+			
+			
 		else:
 			rotate_input -= Input.get_action_strength("steer_left")
 			rotate_input += Input.get_action_strength("steer_right")
