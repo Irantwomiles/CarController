@@ -8,6 +8,15 @@ signal updated_players_state
 func send_player_data_all_rpc(updatedState):
 	GameManager.Players = updatedState
 	
+	var hud = get_tree().get_root().get_node("LevelScene/HUD")
+	
+	var text = ""
+	for i in GameManager.Players:
+		var player = GameManager.Players[i]
+		text += player['name'] + " lap (" + str(player['current_lap']) + "/" + str(GameManager.GameState['LapCount']) + ") \n"
+	
+	hud.get_node("MarginContainer/Info").set_text(text)
+	
 
 @rpc("any_peer")
 func validate_checkpoint_crossing_rpc(player_id, checkpoint_name):
@@ -50,9 +59,11 @@ func validate_checkpoint_crossing_rpc(player_id, checkpoint_name):
 				player["current_check_point"] = ""
 				player["next_check_point"] = all_checkpoints[0]
 				
-				send_player_data_all_rpc.rpc(GameManager.Players)
-				
 				print("[Server] player " + str(player_id) + " has completed lap (" + str(player["current_lap"]) + "/" + str(GameManager.GameState["LapCount"]) + ")")
+			
+			send_player_data_all_rpc.rpc(GameManager.Players)
+			send_player_data_all_rpc(GameManager.Players)
+		
 		else:
 			print("[Server] updated player " + str(player_id) + " next checkpoint to " + all_checkpoints[next_index + 1])
 			player["next_check_point"] = all_checkpoints[next_index + 1]
