@@ -1,7 +1,7 @@
 [gd_scene load_steps=19 format=3 uid="uid://daqjbvugdysgv"]
 
 [ext_resource type="Script" path="res://ArcadeCar.gd" id="1_3ff1i"]
-[ext_resource type="AudioStream" uid="uid://cb5hfqcxlilg4" path="res://audio/rc-car-1.wav" id="2_6cm61"]
+[ext_resource type="AudioStream" uid="uid://btrxs6xtefkhc" path="res://audio/car_idle.wav" id="2_epqmi"]
 [ext_resource type="Script" path="res://camera_pivot.gd" id="3_71bkd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ej3k"]
@@ -384,7 +384,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.869861, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.10336, 6.15356)
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="suv"]
-stream = ExtResource("2_6cm61")
+stream = ExtResource("2_epqmi")
+autoplay = true
 
 [node name="Ball" type="RigidBody3D" parent="."]
 collision_layer = 2
