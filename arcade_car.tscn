@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://daqjbvugdysgv"]
+[gd_scene load_steps=20 format=3 uid="uid://daqjbvugdysgv"]
 
 [ext_resource type="Script" path="res://ArcadeCar.gd" id="1_3ff1i"]
 [ext_resource type="AudioStream" uid="uid://btrxs6xtefkhc" path="res://audio/car_idle.wav" id="2_epqmi"]
 [ext_resource type="Script" path="res://camera_pivot.gd" id="3_71bkd"]
+[ext_resource type="PackedScene" uid="uid://dmrb4fka0gtvo" path="res://particle.tscn" id="4_es7dr"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ej3k"]
 resource_name = "plastic"
@@ -313,6 +314,12 @@ font_size = 24
 horizontal_alignment = 0
 
 [node name="suv" type="Node3D" parent="."]
+
+[node name="particle" parent="suv" instance=ExtResource("4_es7dr")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.507562, -0.857687, 0.787704)
+
+[node name="particle2" parent="suv" instance=ExtResource("4_es7dr")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.519313, -0.857687, 0.787704)
 
 [node name="body" type="Node3D" parent="suv"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)

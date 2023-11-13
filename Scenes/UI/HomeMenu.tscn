@@ -1,0 +1,115 @@
+[gd_scene load_steps=9 format=3 uid="uid://bjl6jwxk0mqrs"]
+
+[ext_resource type="PackedScene" uid="uid://cwgds6owom6o3" path="res://models/suv.tscn" id="1_bfs21"]
+[ext_resource type="FontFile" uid="uid://b56smuddln6v6" path="res://Assets/Fonts/KdamThmorPro-Regular.ttf" id="1_hmbsa"]
+[ext_resource type="Script" path="res://Scripts/HomeMenu.gd" id="1_tg6ut"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f2w0o"]
+
+[sub_resource type="Sky" id="Sky_df0tm"]
+sky_material = SubResource("ProceduralSkyMaterial_f2w0o")
+
+[sub_resource type="Environment" id="Environment_u7ecl"]
+background_mode = 2
+sky = SubResource("Sky_df0tm")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ac2lj"]
+bg_color = Color(0.0156863, 0, 0.662745, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_wum1b"]
+font = ExtResource("1_hmbsa")
+font_size = 20
+
+[node name="HomeMenu" type="CanvasLayer"]
+script = ExtResource("1_tg6ut")
+
+[node name="Root" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Root"]
+environment = SubResource("Environment_u7ecl")
+
+[node name="Vehicle" type="Node3D" parent="Root"]
+
+[node name="suv" parent="Root/Vehicle" instance=ExtResource("1_bfs21")]
+transform = Transform3D(-0.379666, 0, 0.925124, 0, 1, 0, -0.925124, 0, -0.379666, 1.91415, -0.431988, 0)
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Root"]
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="SubViewport" type="SubViewport" parent="Root/SubViewportContainer"]
+handle_input_locally = false
+msaa_3d = 2
+screen_space_aa = 1
+use_taa = true
+use_debanding = true
+scaling_3d_mode = 1
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Root/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.737637, 3.55039)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1921.0
+offset_bottom = 1082.0
+
+[node name="CreateLobby" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 552.0
+offset_right = 320.0
+offset_bottom = 616.0
+theme_override_fonts/font = ExtResource("1_hmbsa")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_ac2lj")
+text = "Create Lobby"
+
+[node name="JoinLobby" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 384.0
+offset_right = 320.0
+offset_bottom = 448.0
+theme_override_fonts/font = ExtResource("1_hmbsa")
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = SubResource("StyleBoxFlat_ac2lj")
+text = "Join Lobby"
+
+[node name="IPAddress" type="LineEdit" parent="Control"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 320.0
+offset_right = 320.0
+offset_bottom = 375.0
+
+[node name="Username" type="LineEdit" parent="Control"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 64.0
+offset_right = 320.0
+offset_bottom = 119.0
+
+[node name="SetUsername" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 320.0
+offset_bottom = 66.0
+text = "Set Username"
+label_settings = SubResource("LabelSettings_wum1b")
+
+[node name="ServerIP" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 280.0
+offset_right = 320.0
+offset_bottom = 314.0
+text = "IP Address"
+label_settings = SubResource("LabelSettings_wum1b")

@@ -12,7 +12,7 @@ extends Node3D
 @onready var audio_stream = $suv/AudioStreamPlayer3D
 
 var sphere_offset = Vector3(0, 0, 0)
-var acceleration = 150
+var acceleration = 100
 var steering = 15.0
 var turn_speed = 4
 var turn_stop_limit = 0.65
@@ -56,39 +56,35 @@ func _process(delta):
 		if not ground_ray.is_colliding():
 			return
 		# Get accelerate/brake input
-		speed_input = 0
-		speed_input += Input.get_action_strength("accelerate")
-		speed_input -= Input.get_action_strength("brake")
-		speed_input *= acceleration
+		
+		var updated_speed = 0
+		
+		updated_speed += Input.get_action_strength("accelerate")
+		updated_speed -= Input.get_action_strength("brake")
+		updated_speed *= acceleration
+		
+		speed_input = lerpf(speed_input, updated_speed, delta * 1.5)
+		
+#		speed_input += Input.get_action_strength("accelerate")
+#		speed_input -= Input.get_action_strength("brake")
+#		speed_input *= acceleration
 		# Get steering input
 		rotate_input = 0
 		
 		break_lights.visible = false
 		
 		if speed_input >= 0:
-			
-#			if speed_input == 0:
-#				audio_stream.set_pitch_scale(1)
-#				audio_stream.stop()
-#				audio_stream.set_volume_db(0)
-#			else:
-#				if not audio_stream.playing:
-#					audio_stream.play()
-#					audio_stream.set_volume_db(0)
-#				else:
-#					audio_stream.set_volume_db(audio_stream.get_volume_db() + 0.001)
-#				
-			
 			rotate_input += Input.get_action_strength("steer_left")
 			rotate_input -= Input.get_action_strength("steer_right")
-			
-			
 		else:
 			rotate_input -= Input.get_action_strength("steer_left")
 			rotate_input += Input.get_action_strength("steer_right")
 			break_lights.visible = true
 		
+	
 		rotate_input *= deg_to_rad(steering)
+		
+
 		# rotate wheels for effect
 		right_wheel.rotation.y = rotate_input
 		left_wheel.rotation.y = rotate_input

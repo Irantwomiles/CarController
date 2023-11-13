@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://dmrb4fka0gtvo"]
+
+[ext_resource type="Texture2D" uid="uid://bsg0efec7uiep" path="res://smoke1-removebg-preview.png" id="1_420dp"]
+
+[sub_resource type="Curve" id="Curve_i6a8y"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_sb6kf"]
+curve = SubResource("Curve_i6a8y")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mhwia"]
+emission_shape = 1
+emission_sphere_radius = 8.5
+direction = Vector3(0, 0, 5)
+gravity = Vector3(0, 0.3, 0)
+angular_velocity_curve = SubResource("CurveTexture_sb6kf")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_serm6"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.792157, 0.792157, 0.792157, 0.243137)
+albedo_texture = ExtResource("1_420dp")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_3h4ds"]
+material = SubResource("StandardMaterial3D_serm6")
+size = Vector2(0.25, 0.25)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transparency = 0.81
+emitting = false
+amount = 200
+lifetime = 0.1
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_mhwia")
+draw_pass_1 = SubResource("QuadMesh_3h4ds")
